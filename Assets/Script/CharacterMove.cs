@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CharacterMove : MonoBehaviour
@@ -7,6 +8,9 @@ public class CharacterMove : MonoBehaviour
     [SerializeField] float speed = 5.0f;
     Vector3 inputVector;
     Rigidbody2D rb2d;
+    bool isGrounded = false;
+    bool jumpRequested = false;
+    float jumpForce = 1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,10 +27,28 @@ public class CharacterMove : MonoBehaviour
         inputVector = new Vector3(horizontalInput, verticalInput, 0);
         //MoveByTransformTranslate(horizontalInput, verticalInput);
         //MoveByTransform(horizontalInput, verticalInput);
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            jumpRequested = true;
+        }
     }
     private void FixedUpdate()
     {
         MoveByRigidbody2dForce();
+        if (jumpRequested)
+        {
+            rb2d.AddForce(new Vector2(0, jumpForce));
+            isGrounded = false;
+            jumpRequested = false;
+        }
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded |= true;
+        }
     }
     void MoveByRigidbody2dForce()
     {
