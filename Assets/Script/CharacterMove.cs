@@ -8,9 +8,9 @@ public class CharacterMove : MonoBehaviour
     [SerializeField] float speed = 5.0f;
     Vector3 inputVector;
     Rigidbody2D rb2d;
-    bool isGrounded = false;
-    bool jumpRequested = false;
-    float jumpForce = 1f;
+    [SerializeField] bool isGrounded = false;
+    [SerializeField] bool jumpRequested = false;
+    [SerializeField] float jumpForce = 1f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,11 +25,12 @@ public class CharacterMove : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         inputVector = new Vector3(horizontalInput, verticalInput, 0);
-        //MoveByTransformTranslate(horizontalInput, verticalInput);
+        MoveByTransformTranslate(horizontalInput, verticalInput);
         //MoveByTransform(horizontalInput, verticalInput);
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             jumpRequested = true;
+            Debug.Log("PULOU!");
         }
     }
     private void FixedUpdate()
@@ -40,6 +41,7 @@ public class CharacterMove : MonoBehaviour
             rb2d.AddForce(new Vector2(0, jumpForce));
             isGrounded = false;
             jumpRequested = false;
+            Debug.Log("Pulo Acionado!");
         }
 
     }
@@ -47,13 +49,14 @@ public class CharacterMove : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded |= true;
+            isGrounded = true;
+            Debug.Log("Colidiu com o Chão!");
         }
     }
     void MoveByRigidbody2dForce()
     {
-        Vector3 forceVector = inputVector * speed;
-        rb2d.AddForce(forceVector);
+        //Vector3 forceVector = inputVector * speed;
+        //rb2d.AddForce(forceVector);
     }
     void MoveByTransform(float horizontalInput, float verticalInput)
     {
