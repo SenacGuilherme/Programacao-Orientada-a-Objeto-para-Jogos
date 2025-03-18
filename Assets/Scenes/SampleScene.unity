@@ -152,6 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  isGrounded: 0
+  jumpRequested: 0
+  jumpForce: 500
 --- !u!61 &131638570
 BoxCollider2D:
   m_ObjectHideFlags: 0
