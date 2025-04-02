@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CharacterMove : MonoBehaviour
 {
-    const int MAX_HEALTH = 100;
+    const float MAX_HEALTH = 100;
     private int health;
     [SerializeField] float speed = 5.0f;
     Vector3 inputVector;
@@ -11,13 +11,21 @@ public class CharacterMove : MonoBehaviour
     [SerializeField] bool isGrounded = false;
     [SerializeField] bool jumpRequested = false;
     [SerializeField] float jumpForce = 1f;
+    public PlayerData playerData;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        health = MAX_HEALTH;
+        playerData.Health = MAX_HEALTH;
         rb2d = GetComponent<Rigidbody2D>();
     }
+
+    public void Awake()
+    {
+        
+
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -76,12 +84,22 @@ public class CharacterMove : MonoBehaviour
     {
 
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        health -= damage;
-        if (health <= 0)
+        playerData.Health -= damage;
+        if (playerData.Health <= 0)
         {
-
+            Debug.Log("Mó-rreu");
         }
     }
+
+    public void OnTriggerEnter2D(Collider2D ObjetoColidido)
+    {
+        Debug.Log("Entrou em colisão com um Trigger");
+        if (ObjetoColidido.gameObject.CompareTag("Hazard"))
+        {
+            TakeDamage(10);
+        }
+    }
+
 }
